@@ -1,0 +1,42 @@
+/* you can add to or change this. */
+
+#game div {
+  border: 1px solid black;
+  width: 100px;
+  height: 100px;
+  margin: 20px;
+  display: inline-block;
+}
+
+div.notFlipped {
+  background-color: gray;
+}
+
+.red {
+  transition: 1s;
+  background-color: red;
+}
+
+.blue {
+  transition: 1s;
+
+  background-color: blue;
+}
+
+.green {
+  transition: 1s;
+
+  background-color: green;
+}
+
+.orange {
+  transition: 1s;
+
+  background-color: orange;
+}
+
+.purple {
+  transition: 1s;
+
+  background-color: purple;
+}
