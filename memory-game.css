@@ -1,12 +1,30 @@
 /* you can add to or change this. */
 
+#game {
+  height: 800px;
+  width: 1000px;
+  margin: auto;
+}
+
+#game.on {
+  display: none;
+}
+
 #game div {
   border: 1px solid black;
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 250px;
   margin: 20px;
   display: inline-block;
+  border-radius: 15px;
 }
+
+body {
+  background-color: #f1faee;
+}
+
+/* #button {
+} */
 
 div.notFlipped {
   background-color: gray;

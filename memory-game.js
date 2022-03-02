@@ -24,11 +24,23 @@ const COLORS = [
 
 const colors = shuffle(COLORS);
 
+let startButton = document.querySelector("#start");
+startButton.addEventListener("click", function () {
+  let startScreen = document.querySelector(".startScreen");
+  startScreen.style.display = "none";
+  let gameBoard = document.querySelector("#game");
+  gameBoard.classList.toggle("on");
+
+  let score = document.createElement("h2");
+  score.innerHTML = `Score: ${scoreTotal}`;
+  gameBoard.append(score);
+});
+
 createCards(colors);
 
 let clickCounter = 0;
+let scoreTotal = 0;
 let allCards = document.querySelectorAll("div");
-
 /** Shuffle array items in-place and return shuffled array. */
 
 function shuffle(items) {
@@ -78,6 +90,9 @@ function createCards(colors) {
         clickCounter = 0;
       }, 1000);
     }
+    if (checkWin()) {
+      handleWin();
+    }
   });
 }
 
@@ -89,6 +104,7 @@ function flipCard(card) {
     clickCounter--;
     console.log("You can't choose a card that's already face up.");
   } else if (card.dataset.status === "notFlipped") {
+    handleScore();
     card.dataset.status = "flipped";
     card.classList.toggle("notFlipped");
   }
@@ -106,16 +122,11 @@ function unFlipCard(card) {
 function handleCardClick(evt) {
   // ... you need to write this ...
   console.log("handleCardClick");
+
   clickCounter++;
   if (clickCounter <= 2) {
     flipCard(evt.target);
   }
-  // else {
-  //   // console.log("Too many clicks! You are at: ", clickCounter);
-  //   // perform pair check
-  //   clickCounter = 0; // reset click counter
-  //   checkIfMatch();
-  // }
 }
 
 function checkIfMatch() {
@@ -141,16 +152,32 @@ function checkIfMatch() {
   }
 }
 
-// function checkWin() {
-//   console.log("checkWin");
-//   let cards = document.querySelectorAll("div");
-//   for (let card of cards) {
-//     if (card.dataset.matched !== "true") {
-//       console.log("No winner yet");
-//       return;
-//     }
-//   }
-//   return alert("You win!");
-// }
+function checkWin() {
+  console.log("checkWin");
+  for (let card of allCards) {
+    if (card.classList.contains("notFlipped")) {
+      console.log("No winner yet");
+      return false;
+    }
+  }
+  console.log("Winner");
+  return true;
+}
 
-// checkWin();
+function handleWin() {
+  const gameBoard = document.getElementById("game");
+  let winMessage = document.createElement("h2");
+  winMessage.innerText = "WINNER WINNER CHICKEN DINNER";
+  gameBoard.append(winMessage);
+  let button = document.createElement("button");
+  button.innerText = "New Game";
+  gameBoard.append(button);
+}
+
+function handleScore() {
+  scoreTotal++;
+  let score = document.querySelector("h2");
+  score.innerHTML = `Score: ${scoreTotal}`;
+}
+
+function newGame() {}
