@@ -6,10 +6,6 @@
   margin: auto;
 }
 
-#game.on {
-  display: none;
-}
-
 #game div {
   border: 1px solid black;
   width: 150px;
@@ -23,8 +19,8 @@ body {
   background-color: #f1faee;
 }
 
-/* #button {
-} */
+.winSection {
+}
 
 div.notFlipped {
   background-color: gray;

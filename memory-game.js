@@ -23,40 +23,35 @@ const COLORS = [
 ];
 
 const colors = shuffle(COLORS);
+const gameBoard = document.querySelector("#game");
 
 let startButton = document.querySelector("#start");
 startButton.addEventListener("click", function () {
-  let startScreen = document.querySelector(".startScreen");
-  startScreen.style.display = "none";
-  let gameBoard = document.querySelector("#game");
-  gameBoard.classList.toggle("on");
-
-  let score = document.createElement("h2");
-  score.innerHTML = `Score: ${scoreTotal}`;
-  gameBoard.append(score);
+  let startSection = document.querySelector("#startScreen");
+  startSection.style.display = "none";
+  createCards(colors);
 });
-
-createCards(colors);
 
 let clickCounter = 0;
 let scoreTotal = 0;
-let allCards = document.querySelectorAll("div");
-/** Shuffle array items in-place and return shuffled array. */
+let highScore = 0;
+const allCards = document.querySelectorAll("div");
 
-function shuffle(items) {
-  // This algorithm does a "perfect shuffle", where there won't be any
-  // statistical bias in the shuffle (many naive attempts to shuffle end up not
-  // be a fair shuffle). This is called the Fisher-Yates shuffle algorithm; if
-  // you're interested, you can learn about it, but it's not important.
-
-  for (let i = items.length - 1; i > 0; i--) {
-    // generate a random index between 0 and i
-    let j = Math.floor(Math.random() * i);
-    // swap item at i <-> item at j
-    [items[i], items[j]] = [items[j], items[i]];
+function newGame() {
+  while (gameBoard.contains(document.querySelector("div"))) {
+    let card = document.querySelector("div");
+    card.remove();
+  }
+  let h2 = document.querySelector("h2");
+  h2.remove();
+  let section = document.querySelector(".winSection");
+  section.remove();
+  scoreTotal = 0;
+  if (highScore === 0 || highScore > scoreTotal) {
+    highScore = scoreTotal;
   }
 
-  return items;
+  createCards(colors);
 }
 
 /** Create card for every color in colors (each will appear twice)
@@ -73,7 +68,6 @@ function createCards(colors) {
   for (let color of colors) {
     let card = document.createElement("div");
     card.dataset.color = color;
-    card.dataset.status = "notFlipped";
     card.dataset.matched = "false";
     card.classList.add("notFlipped", color);
     gameBoard.append(card);
@@ -90,23 +84,27 @@ function createCards(colors) {
         clickCounter = 0;
       }, 1000);
     }
-    if (checkWin()) {
-      handleWin();
-    }
   });
+
+  let score = document.createElement("h2");
+  score.innerHTML = `Score: ${scoreTotal}`;
+  gameBoard.append(score);
 }
 
 /** Flip a card face-up. */
 function flipCard(card) {
   // ... you need to write this ...
   console.log("flipCard");
-  if (card.dataset.status === "flipped") {
+
+  if (!card.classList.contains("notFlipped")) {
     clickCounter--;
     console.log("You can't choose a card that's already face up.");
-  } else if (card.dataset.status === "notFlipped") {
+  } else if (card.classList.contains("notFlipped")) {
     handleScore();
-    card.dataset.status = "flipped";
     card.classList.toggle("notFlipped");
+  }
+  if (checkWin()) {
+    handleWin();
   }
 }
 
@@ -114,7 +112,6 @@ function flipCard(card) {
 function unFlipCard(card) {
   // ... you need to write this ...
   console.log("unFlipCard", card);
-  card.dataset.status = "notFlipped";
   card.classList.toggle("notFlipped");
 }
 
@@ -134,8 +131,11 @@ function checkIfMatch() {
   let cardPair = [];
 
   // get the two flipped cards
-  for (let card of allCards) {
-    if (card.dataset.status === "flipped" && card.dataset.matched === "false") {
+  for (let card of document.querySelectorAll("div")) {
+    if (
+      !card.classList.contains("notFlipped") &&
+      card.dataset.matched === "false"
+    ) {
       cardPair.push(card);
     }
   }
@@ -154,7 +154,7 @@ function checkIfMatch() {
 
 function checkWin() {
   console.log("checkWin");
-  for (let card of allCards) {
+  for (let card of document.querySelectorAll("div")) {
     if (card.classList.contains("notFlipped")) {
       console.log("No winner yet");
       return false;
@@ -168,10 +168,17 @@ function handleWin() {
   const gameBoard = document.getElementById("game");
   let winMessage = document.createElement("h2");
   winMessage.innerText = "WINNER WINNER CHICKEN DINNER";
-  gameBoard.append(winMessage);
+
   let button = document.createElement("button");
   button.innerText = "New Game";
-  gameBoard.append(button);
+  button.addEventListener("click", newGame);
+
+  let winSection = document.createElement("section");
+  winSection.classList.add("winSection");
+
+  winSection.append(winMessage);
+  winSection.append(button);
+  gameBoard.append(winSection);
 }
 
 function handleScore() {
@@ -180,4 +187,20 @@ function handleScore() {
   score.innerHTML = `Score: ${scoreTotal}`;
 }
 
-function newGame() {}
+/** Shuffle array items in-place and return shuffled array. */
+
+function shuffle(items) {
+  // This algorithm does a "perfect shuffle", where there won't be any
+  // statistical bias in the shuffle (many naive attempts to shuffle end up not
+  // be a fair shuffle). This is called the Fisher-Yates shuffle algorithm; if
+  // you're interested, you can learn about it, but it's not important.
+
+  for (let i = items.length - 1; i > 0; i--) {
+    // generate a random index between 0 and i
+    let j = Math.floor(Math.random() * i);
+    // swap item at i <-> item at j
+    [items[i], items[j]] = [items[j], items[i]];
+  }
+
+  return items;
+}
