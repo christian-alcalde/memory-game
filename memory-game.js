@@ -44,14 +44,22 @@ function newGame() {
   }
   let h2 = document.querySelector("h2");
   h2.remove();
+  let h3 = document.querySelector("h3");
+  if (h3 !== null) {
+    h3.remove();
+  }
+
   let section = document.querySelector(".winSection");
   section.remove();
-  scoreTotal = 0;
   if (highScore === 0 || highScore > scoreTotal) {
     highScore = scoreTotal;
   }
+  scoreTotal = 0;
 
   createCards(colors);
+  let highscoreCounter = document.createElement("h3");
+  highscoreCounter.innerText = `High Score: ${highScore}`;
+  gameBoard.append(highscoreCounter);
 }
 
 /** Create card for every color in colors (each will appear twice)
