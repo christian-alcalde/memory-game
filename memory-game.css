@@ -1,9 +1,14 @@
 /* you can add to or change this. */
+#startScreen {
+  text-align: center;
+  font-size: 36px;
+}
 
 #game {
   height: 800px;
   width: 1000px;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #game div {
@@ -15,11 +20,17 @@
   border-radius: 15px;
 }
 
+#game div:hover {
+  transition: 0.5s;
+  transform: scale(1.1);
+}
+
 body {
   background-color: #f1faee;
 }
 
 .winSection {
+  text-align: center;
 }
 
 div.notFlipped {
