@@ -1,7 +1,5 @@
 /* you can add to or change this. */
 #startScreen {
-  transition: 2s linear all;
-
   text-align: center;
   font-size: 36px;
 }
@@ -43,7 +41,7 @@ body {
 
 div.notFlipped {
   transition: 1s;
-  background-color: gray;
+  background-color: rgb(169, 169, 169);
 }
 
 .red {
@@ -81,4 +79,8 @@ div.notFlipped {
   margin: auto;
   width: 20%;
   margin-bottom: 10px;
+}
+
+.dory {
+  border: 3px solid black;
 }
