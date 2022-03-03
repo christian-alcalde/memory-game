@@ -46,17 +46,13 @@ startButton.addEventListener("click", function () {
 });
 
 function newGame() {
-  while (gameBoard.contains(document.querySelector("div"))) {
-    let card = document.querySelector("div");
-    card.remove();
-  }
-  let h2 = document.querySelector("h2");
-  h2.remove();
-  let h3 = document.querySelector("h3");
-  h3.remove();
+  let button = document.querySelector("button");
+  button.removeEventListener("click", newGame);
 
-  let section = document.querySelector(".winSection");
-  section.remove();
+  while (gameBoard.firstChild !== null) {
+    gameBoard.firstChild.remove();
+  }
+
   if (highScore !== "---" && scoreTotal < highScore) {
     localStorage.setItem("score", scoreTotal);
   } else {
@@ -120,9 +116,9 @@ function flipCard(card) {
   } else if (card.classList.contains("notFlipped")) {
     handleScore();
     card.classList.toggle("notFlipped");
-  }
-  if (checkWin()) {
-    handleWin();
+    if (checkWin()) {
+      handleWin();
+    }
   }
 }
 
@@ -137,10 +133,12 @@ function unFlipCard(card) {
 function handleCardClick(evt) {
   // ... you need to write this ...
   console.log("handleCardClick");
-
   clickCounter++;
+
   if (clickCounter <= 2) {
     flipCard(evt.target);
+  } else if (clickCounter > 2) {
+    clickCounter = 0;
   }
 }
 
