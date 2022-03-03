@@ -31,8 +31,25 @@
 }
 
 body {
-  background-color: #f1faee;
+  background-color: #457b9d;
+  color: #f1faee;
+  text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000,
+    -1px -1px 0 #000;
   font-family: monospace;
+}
+
+button {
+  padding: 15px;
+  background-color: #a8dadc;
+  border: none;
+  border-radius: 10px;
+  color: #000000;
+}
+
+button:hover {
+  transition: 0.2s;
+  background-color: #1d3557;
+  color: #f1faee;
 }
 
 .winSection {

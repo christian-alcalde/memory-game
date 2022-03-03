@@ -184,6 +184,7 @@ function handleWin() {
   const gameBoard = document.getElementById("game");
   let winMessage = document.createElement("h2");
   winMessage.innerText = "WINNER WINNER CHICKEN DINNER";
+  winMessage.style.fontSize = "3em";
   let img = document.createElement("img");
   img.src = "Pictures/carlton.gif";
   img.classList.add("carlton");
