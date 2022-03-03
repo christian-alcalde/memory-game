@@ -53,9 +53,7 @@ function newGame() {
     gameBoard.firstChild.remove();
   }
 
-  if (highScore !== "---" && scoreTotal < highScore) {
-    localStorage.setItem("score", scoreTotal);
-  } else {
+  if (highScore !== "---" || scoreTotal < highScore) {
     localStorage.setItem("score", scoreTotal);
   }
   scoreTotal = 0;
