@@ -74,3 +74,11 @@ div.notFlipped {
 
   background-color: purple;
 }
+
+.carlton {
+  transition: 0.5s;
+  display: block;
+  margin: auto;
+  width: 20%;
+  margin-bottom: 10px;
+}

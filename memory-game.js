@@ -27,6 +27,7 @@ const gameBoard = document.querySelector("#game");
 
 let clickCounter = 0;
 let scoreTotal = 0;
+let gameComplete = false;
 
 if (localStorage.getItem("score") === null) {
   localStorage.setItem("score", "---");
@@ -185,19 +186,24 @@ function handleWin() {
   const gameBoard = document.getElementById("game");
   let winMessage = document.createElement("h2");
   winMessage.innerText = "WINNER WINNER CHICKEN DINNER";
+  let img = document.createElement("img");
+  img.src = "Pictures/carlton.gif";
+  img.classList.add("carlton");
 
   let button = document.createElement("button");
   button.innerText = "New Game";
-  button.addEventListener("click", newGame);
 
   let winSection = document.createElement("section");
   winSection.classList.add("winSection");
 
   winSection.append(winMessage);
+  winSection.append(img);
   winSection.append(button);
   gameBoard.append(winSection);
 
   clickCounter = 0;
+
+  button.addEventListener("click", newGame);
 }
 
 function handleScore() {
