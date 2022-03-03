@@ -28,6 +28,7 @@ const gameBoard = document.querySelector("#game");
 let clickCounter = 0;
 let scoreTotal = 0;
 let gameComplete = false;
+let processing = false;
 
 if (localStorage.getItem("score") === null) {
   localStorage.setItem("score", "---");
@@ -82,14 +83,14 @@ function createCards(colors) {
 
   gameBoard.addEventListener("click", function (event) {
     if (event.target.tagName === "DIV") {
-      handleCardClick(event);
-      console.log("Clicks: ", clickCounter);
+      if (processing === false) {
+        handleCardClick(event);
+        console.log("Clicks: ", clickCounter);
+      }
     }
-    if (clickCounter === 2) {
-      setTimeout(function () {
-        checkIfMatch();
-        clickCounter = 0;
-      }, 1000);
+    if (clickCounter >= 2) {
+      checkIfMatch();
+      clickCounter = 0;
     }
   });
 
@@ -101,6 +102,18 @@ function createCards(colors) {
   highscoreCounter.innerText = `High Score: ${localStorage.getItem("score")}`;
   gameBoard.append(score);
   gameBoard.append(highscoreCounter);
+}
+
+function handleCardClick(evt) {
+  // ... you need to write this ...
+  console.log("handleCardClick");
+
+  if (clickCounter <= 2) {
+    clickCounter++;
+    flipCard(evt.target);
+  } else if (clickCounter > 2) {
+    clickCounter = 0;
+  }
 }
 
 /** Flip a card face-up. */
@@ -128,20 +141,10 @@ function unFlipCard(card) {
 }
 
 /** Handle clicking on a card: this could be first-card or second-card. */
-function handleCardClick(evt) {
-  // ... you need to write this ...
-  console.log("handleCardClick");
-  clickCounter++;
-
-  if (clickCounter <= 2) {
-    flipCard(evt.target);
-  } else if (clickCounter > 2) {
-    clickCounter = 0;
-  }
-}
 
 function checkIfMatch() {
   console.log("checkIfMatch");
+
   let cardPair = [];
 
   // get the two flipped cards
@@ -159,10 +162,21 @@ function checkIfMatch() {
     cardPair[0].dataset.matched = "true";
     cardPair[1].dataset.matched = "true";
     console.log("Match!");
+    return true;
   } else {
-    unFlipCard(cardPair[0]);
-    unFlipCard(cardPair[1]);
-    console.log("Not a match!");
+    processing = true;
+    setTimeout(function () {
+      while ((processing = true)) {
+        console.log(cardPair);
+        unFlipCard(cardPair[0]);
+        unFlipCard(cardPair[1]);
+        cardPair = [];
+
+        console.log("Not a match!");
+        processing = false;
+        return false;
+      }
+    }, 1000);
   }
 }
 
