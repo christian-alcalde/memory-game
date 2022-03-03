@@ -25,17 +25,24 @@ const COLORS = [
 const colors = shuffle(COLORS);
 const gameBoard = document.querySelector("#game");
 
+let clickCounter = 0;
+let scoreTotal = 0;
+
+if (localStorage.getItem("score") === null) {
+  localStorage.setItem("score", "---");
+}
+let highScore = localStorage.getItem("score");
+
+const allCards = document.querySelectorAll("div");
+let h2 = document.querySelector("h2");
+h2.append(" " + highScore);
+
 let startButton = document.querySelector("#start");
 startButton.addEventListener("click", function () {
   let startSection = document.querySelector("#startScreen");
-  startSection.style.display = "none";
+  startSection.remove();
   createCards(colors);
 });
-
-let clickCounter = 0;
-let scoreTotal = 0;
-let highScore = 0;
-const allCards = document.querySelectorAll("div");
 
 function newGame() {
   while (gameBoard.contains(document.querySelector("div"))) {
@@ -45,21 +52,18 @@ function newGame() {
   let h2 = document.querySelector("h2");
   h2.remove();
   let h3 = document.querySelector("h3");
-  if (h3 !== null) {
-    h3.remove();
-  }
+  h3.remove();
 
   let section = document.querySelector(".winSection");
   section.remove();
-  if (highScore === 0 || highScore > scoreTotal) {
-    highScore = scoreTotal;
+  if (highScore !== "---" && scoreTotal < highScore) {
+    localStorage.setItem("score", scoreTotal);
+  } else {
+    localStorage.setItem("score", scoreTotal);
   }
   scoreTotal = 0;
 
   createCards(colors);
-  let highscoreCounter = document.createElement("h3");
-  highscoreCounter.innerText = `High Score: ${highScore}`;
-  gameBoard.append(highscoreCounter);
 }
 
 /** Create card for every color in colors (each will appear twice)
@@ -95,8 +99,13 @@ function createCards(colors) {
   });
 
   let score = document.createElement("h2");
+  score.setAttribute("id", "scoreCounter");
   score.innerHTML = `Score: ${scoreTotal}`;
+
+  let highscoreCounter = document.createElement("h3");
+  highscoreCounter.innerText = `High Score: ${localStorage.getItem("score")}`;
   gameBoard.append(score);
+  gameBoard.append(highscoreCounter);
 }
 
 /** Flip a card face-up. */
@@ -187,11 +196,13 @@ function handleWin() {
   winSection.append(winMessage);
   winSection.append(button);
   gameBoard.append(winSection);
+
+  clickCounter = 0;
 }
 
 function handleScore() {
-  scoreTotal++;
   let score = document.querySelector("h2");
+  scoreTotal++;
   score.innerHTML = `Score: ${scoreTotal}`;
 }
 

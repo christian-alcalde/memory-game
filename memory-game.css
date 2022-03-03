@@ -6,6 +6,10 @@
   font-size: 36px;
 }
 
+#startScreen h2 {
+  font-size: 24px;
+}
+
 #game {
   transition: 2s linear all;
   height: 800px;
@@ -15,7 +19,7 @@
 }
 
 #game div {
-  border: 1px solid black;
+  border: 2px solid black;
   width: 150px;
   height: 250px;
   margin: 20px;
@@ -38,6 +42,7 @@ body {
 }
 
 div.notFlipped {
+  transition: 1s;
   background-color: gray;
 }
 
